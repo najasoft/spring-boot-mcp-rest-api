@@ -33,6 +33,7 @@ public class ProjetMcpTools {
 
     @McpTool(name = "getProjetsDev", description = "Récupère la liste de tous les projets de développement")
     public List<ProjetDev> getProjetsDev() {
+        
         return projetService.getProjetsDev();
     }
 

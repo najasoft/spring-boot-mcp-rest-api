@@ -308,56 +308,109 @@ Dans l'interface Inspector Web :
 3. **Tester un outil d'écriture** : ex `ajouterDeveloppeur(nom, email)`, `ajouterProjetDev(description, langage)`
 4. **Vérifier la persistance** : relancer un tool de lecture pour confirmer les données créées
 
-## 10. Créer un client MCP Python (exemple)
+## 10. Créer un client MCP Python
 
-Exemple minimal d'un client Python qui appelle le tool `lesProjets` et affiche tous les projets.
+### 10.1. Comprendre le protocole MCP
 
-### 10.1. Prérequis
+**MCP (Model Context Protocol)** est un protocole standardisé pour l'échange entre clients et serveurs :
 
-- Python 3.10+
-- `pip`
-- Serveur Spring Boot démarré sur `http://localhost:8080`
+- **Protocole** : JSON-RPC 2.0 sur HTTP/WebSocket
+- **Transports** : Streamable HTTP (défaut pour ce serveur), stdio, SSE
+- **Flux** : sans état, basé sur requête/réponse
 
-### 10.2. Installation
+Le serveur MCP expose :
+- Endpoint HTTP : `http://localhost:8080/mcp`
+- Transport : `Streamable HTTP` (compatible avec la SDK Python MCP officielle)
 
-```powershell
-pip install requests
+### 10.2. Package officiel MCP Python
+
+La SDK Python officielle du protocole MCP est disponible via PyPI :
+
+```bash
+pip install mcp
 ```
 
-### 10.3. Exemple de script
+**Documentation officielle** : [Model Context Protocol - Python SDK](https://github.com/modelcontextprotocol/python-sdk)
+
+### 10.3. Étapes pour créer un client
+
+Un client MCP Python suit ce pattern :
+
+1. **Importer la SDK** :
+   ```python
+   from mcp.client.session import ClientSession
+   from mcp.client.streamable_http import StreamableHttpTransport
+   ```
+
+2. **Établir la connexion** (via Streamable HTTP) :
+   ```python
+   transport = StreamableHttpTransport("http://localhost:8080/mcp")
+   async with ClientSession(transport) as session:
+       result = await session.initialize()
+   ```
+
+3. **Lister les outils disponibles** :
+   ```python
+   tools = await session.list_tools()
+   for tool in tools.tools:
+       print(f"- {tool.name}: {tool.description}")
+   ```
+
+4. **Appeler un tool** :
+   ```python
+   response = await session.call_tool("lesProjets", {})
+   print(response.content[0].text)
+   ```
+
+5. **Appeler un tool avec paramètres** :
+   ```python
+   response = await session.call_tool("ajouterDeveloppeur", {
+       "nom": "Alice",
+       "email": "alice@example.com"
+   })
+   ```
+
+### 10.4. Exemple complet (optionnel)
+
+Un exemple complet de client est fourni dans `mcp_client/mcp_client.py` du projet.
+
+Pour l'utiliser :
+
+```bash
+cd mcp_client
+pip install -r requirements.txt
+python mcp_client.py
+```
+
+**Dépendances** (`requirements.txt`) :
+- `mcp>=1.9.0` : SDK Python officiel du protocole MCP
+- `httpx>=0.28.0` : client HTTP async pour les requêtes
+
+### 10.5. Intégration dans votre application
+
+Pour intégrer le client MCP à votre application Python :
+
+1. Installer la SDK MCP officielle
+2. Créer une session avec `StreamableHttpTransport`
+3. Utiliser `await session.initialize()` pour établir le protocole
+4. Appeler `await session.call_tool(name, args)` pour invoquer les outils
+
+**Exemple minimal** :
 
 ```python
-import json
-import requests
+import asyncio
+from mcp.client.session import ClientSession
+from mcp.client.streamable_http import StreamableHttpTransport
 
-MCP_URL = "http://localhost:8080/mcp"
+async def main():
+    transport = StreamableHttpTransport("http://localhost:8080/mcp")
+    async with ClientSession(transport) as session:
+        await session.initialize()
+        # Appeler un tool
+        response = await session.call_tool("lesProjets", {})
+        print(response.content[0].text)
 
-
-def call_tool(tool_name, arguments):
-    payload = {
-        "jsonrpc": "2.0",
-        "id": 1,
-        "method": "tools/call",
-        "params": {
-            "name": tool_name,
-            "arguments": arguments,
-        },
-    }
-
-    response = requests.post(MCP_URL, json=payload, timeout=30)
-    response.raise_for_status()
-    return response.json()
-
-
-if __name__ == "__main__":
-    result = call_tool("lesProjets", {})
-    print(json.dumps(result, indent=2, ensure_ascii=False))
-```
-
-### 10.4. Exécution
-
-```powershell
-python client_mcp.py
+asyncio.run(main())
 ```
 
 ## 11. Notes
