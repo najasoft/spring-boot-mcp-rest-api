@@ -102,7 +102,19 @@ L'application démarre par défaut sur `http://localhost:8080`.
 .\mvnw spring-boot:run
 ```
 
-## 6. API REST (Spring Boot)
+## 6. Comprendre le protocole MCP
+
+**MCP (Model Context Protocol)** est un protocole standardisé pour l'échange entre clients et serveurs :
+
+- **Protocole** : JSON-RPC 2.0 sur HTTP/WebSocket
+- **Transports** : Streamable HTTP (défaut pour ce serveur), stdio, SSE
+- **Flux** : sans état, basé sur requête/réponse
+
+Le serveur MCP de ce projet expose :
+- Endpoint HTTP : `http://localhost:8080/mcp`
+- Transport : `Streamable HTTP` (compatible avec la SDK Python MCP)
+
+## 7. API REST (Spring Boot)
 
 Contrôleurs REST :
 
@@ -145,7 +157,7 @@ Documentation interactive de l'API :
 </dependency>
 ```
 
-## 7. Serveur MCP
+## 8. Serveur MCP
 
 ### 7.1. Dépendances MCP
 
@@ -234,7 +246,7 @@ Endpoint MCP :
 - `ajouterDeveloppeur(nom, email)`
 - `affecterTache(idDev, idTache)`
 
-## 8. VS Code + GitHub Copilot Chat
+## 9. VS Code + GitHub Copilot Chat
 
 Le serveur MCP peut être ajouté en mode HTTP dans la configuration MCP de VS Code, en pointant vers :
 
@@ -259,7 +271,7 @@ Crée 5 développeurs : Alice, Bob, Charlie, Diana, Eve (avec emails corresponda
 
 Le client IA orchestrera les appels aux tools pour réaliser le scénario complexe.
 
-## 9. MCP Inspector
+## 10. MCP Inspector
 
 MCP Inspector permet de tester et de déboguer les outils MCP manuellement sans IA.
 
@@ -308,25 +320,13 @@ Dans l'interface Inspector Web :
 3. **Tester un outil d'écriture** : ex `ajouterDeveloppeur(nom, email)`, `ajouterProjetDev(description, langage)`
 4. **Vérifier la persistance** : relancer un tool de lecture pour confirmer les données créées
 
-## 10. Notes
+## 11. Notes
 
 - L'API REST et MCP coexistent et peuvent être utilisés en parallèle selon le type de client.
 
-## 11. Créer un client MCP Python
+## 12. Créer un client MCP Python
 
-### 11.1. Comprendre le protocole MCP
-
-**MCP (Model Context Protocol)** est un protocole standardisé pour l'échange entre clients et serveurs :
-
-- **Protocole** : JSON-RPC 2.0 sur HTTP/WebSocket
-- **Transports** : Streamable HTTP (défaut pour ce serveur), stdio, SSE
-- **Flux** : sans état, basé sur requête/réponse
-
-Le serveur MCP expose :
-- Endpoint HTTP : `http://localhost:8080/mcp`
-- Transport : `Streamable HTTP` (compatible avec la SDK Python MCP)
-
-### 11.2. Package MCP Python
+### 12.1. Package MCP Python
 
 La SDK Python du protocole MCP est disponible via PyPI :
 
@@ -336,7 +336,7 @@ pip install mcp
 
 **Documentation** : [Model Context Protocol - Python SDK](https://github.com/modelcontextprotocol/python-sdk)
 
-### 11.3. Étapes pour créer un client
+### 12.2. Étapes pour créer un client
 
 Un client MCP Python suit ce pattern :
 
@@ -374,7 +374,7 @@ Un client MCP Python suit ce pattern :
    })
    ```
 
-### 11.4. Intégration dans votre application
+### 12.3. Intégration dans votre application
 
 Pour intégrer le client MCP à votre application Python :
 
