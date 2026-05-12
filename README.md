@@ -324,7 +324,7 @@ Dans l'interface Inspector Web :
 
 Le serveur MCP expose :
 - Endpoint HTTP : `http://localhost:8080/mcp`
-- Transport : `Streamable HTTP` (compatible avec la SDK Python MCP officielle)
+- Transport : `Streamable HTTP` (compatible avec la SDK Python MCP)
 
 ### 11.2. Package MCP Python
 
@@ -374,23 +374,7 @@ Un client MCP Python suit ce pattern :
    })
    ```
 
-### 11.4. Exemple complet (optionnel)
-
-Un exemple complet de client est fourni dans `mcp_client/mcp_client.py` du projet.
-
-Pour l'utiliser :
-
-```bash
-cd mcp_client
-pip install -r requirements.txt
-python mcp_client.py
-```
-
-**Dépendances** (`requirements.txt`) :
-- `mcp>=1.9.0` : SDK Python du protocole MCP
-- `httpx>=0.28.0` : client HTTP async pour les requêtes
-
-### 11.5. Intégration dans votre application
+### 11.4. Intégration dans votre application
 
 Pour intégrer le client MCP à votre application Python :
 
@@ -417,6 +401,3 @@ async def main():
 asyncio.run(main())
 ```
 
-## 11. Notes
-
-- L'API REST et MCP coexistent et peuvent être utilisés en parallèle selon le type de client.
