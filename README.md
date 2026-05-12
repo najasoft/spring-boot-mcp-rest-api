@@ -308,9 +308,13 @@ Dans l'interface Inspector Web :
 3. **Tester un outil d'écriture** : ex `ajouterDeveloppeur(nom, email)`, `ajouterProjetDev(description, langage)`
 4. **Vérifier la persistance** : relancer un tool de lecture pour confirmer les données créées
 
-## 10. Créer un client MCP Python
+## 10. Notes
 
-### 10.1. Comprendre le protocole MCP
+- L'API REST et MCP coexistent et peuvent être utilisés en parallèle selon le type de client.
+
+## 11. Créer un client MCP Python
+
+### 11.1. Comprendre le protocole MCP
 
 **MCP (Model Context Protocol)** est un protocole standardisé pour l'échange entre clients et serveurs :
 
@@ -322,17 +326,17 @@ Le serveur MCP expose :
 - Endpoint HTTP : `http://localhost:8080/mcp`
 - Transport : `Streamable HTTP` (compatible avec la SDK Python MCP officielle)
 
-### 10.2. Package officiel MCP Python
+### 11.2. Package MCP Python
 
-La SDK Python officielle du protocole MCP est disponible via PyPI :
+La SDK Python du protocole MCP est disponible via PyPI :
 
 ```bash
 pip install mcp
 ```
 
-**Documentation officielle** : [Model Context Protocol - Python SDK](https://github.com/modelcontextprotocol/python-sdk)
+**Documentation** : [Model Context Protocol - Python SDK](https://github.com/modelcontextprotocol/python-sdk)
 
-### 10.3. Étapes pour créer un client
+### 11.3. Étapes pour créer un client
 
 Un client MCP Python suit ce pattern :
 
@@ -370,7 +374,7 @@ Un client MCP Python suit ce pattern :
    })
    ```
 
-### 10.4. Exemple complet (optionnel)
+### 11.4. Exemple complet (optionnel)
 
 Un exemple complet de client est fourni dans `mcp_client/mcp_client.py` du projet.
 
@@ -383,14 +387,14 @@ python mcp_client.py
 ```
 
 **Dépendances** (`requirements.txt`) :
-- `mcp>=1.9.0` : SDK Python officiel du protocole MCP
+- `mcp>=1.9.0` : SDK Python du protocole MCP
 - `httpx>=0.28.0` : client HTTP async pour les requêtes
 
-### 10.5. Intégration dans votre application
+### 11.5. Intégration dans votre application
 
 Pour intégrer le client MCP à votre application Python :
 
-1. Installer la SDK MCP officielle
+1. Installer la SDK MCP
 2. Créer une session avec `StreamableHttpTransport`
 3. Utiliser `await session.initialize()` pour établir le protocole
 4. Appeler `await session.call_tool(name, args)` pour invoquer les outils
