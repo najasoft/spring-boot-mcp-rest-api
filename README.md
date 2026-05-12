@@ -16,7 +16,7 @@ Architecture en couches :
 - `repository/` : accès à la base de données ;
 - `model/` : entités JPA.
 
-L'API REST et MCP utilisent les mêmes services métier et la même base de données.
+L'API REST et MCP utilisent les mêmes services métier.
 
 ## 2. Modèle de données
 
@@ -56,7 +56,7 @@ classDiagram
     Developpeur "*" -- "*" Tache : taches
 ```
 
-Diagramme UML (capture IntelliJ) :
+Diagramme UML  :
 
 ![Diagramme des entités IntelliJ](docs/diagramme-entites-intellij.png)
 
